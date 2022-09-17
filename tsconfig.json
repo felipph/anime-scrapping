@@ -1,0 +1,14 @@
+{
+  "extends": "./node_modules/gts/tsconfig-google.json",
+  "compilerOptions": {
+    "module": "es2022",
+    "rootDir": ".",
+    "outDir": "build",
+    "target": "es2022",
+    "moduleResolution": "node",
+  },
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts"
+  ]
+}
