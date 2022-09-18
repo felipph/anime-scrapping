@@ -24,11 +24,11 @@ export class AnimesGrastisBRService {
             ?.toString();
           const cover = $(item).find('img[itemprop="image"]').attr('src');
           listaAnimes.push({
-            id: this.hash(link),
+            itemId: this.hash(link),
             title: titulo,
             link: link,
             cover: cover,
-            episodes: [],
+            // episodes: [],
           });
         });
         // console.log(listaAnimes);

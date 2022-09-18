@@ -5,11 +5,11 @@ export type Episode = {
 };
 
 export type Anime = {
-  id: string;
+  itemId: string;
   title: string;
   link: string | undefined;
   cover: string | undefined;
-  episodes: Episode[];
+  // episodes: Episode[];
 };
 
 export type LambdaPayload = {

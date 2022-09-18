@@ -21,3 +21,9 @@ variable "lambda_name" {
   description = "Nome do Lambda"
   default = "lambda-anime-scrapper"
 }
+
+variable "dynamodb_table_name" {
+  type = string
+  description = "Nome da tabela no dynamodb"
+  default = "AnimeList"
+}

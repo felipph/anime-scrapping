@@ -24,6 +24,34 @@ resource "aws_iam_role" "lambda_iam" {
 EOF
 }
 
+resource "aws_iam_policy" "lambda_policy_dynamodb" {
+  name   = "lambda_dynamodb"
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:BatchGetItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:UpdateItem"
+            ],
+            "Resource": "${aws_dynamodb_table.anime_list_table.arn}"
+        }
+    ]
+}
+EOF
+  depends_on = [
+    aws_dynamodb_table.anime_list_table
+  ]
+}
+
+
 # Lambda em sí
 resource "aws_lambda_function" "lambda_anime_scrapper" {
   function_name    = var.lambda_name
@@ -43,7 +71,7 @@ resource "aws_lambda_function" "lambda_anime_scrapper" {
 }
 
 #Cloudwatch
-resource "aws_cloudwatch_log_group" "example" {
+resource "aws_cloudwatch_log_group" "cloudwatch-log-group" {
   name              = "/aws/lambda/${aws_lambda_function.lambda_anime_scrapper.function_name}"
   retention_in_days = 14
 }
@@ -75,4 +103,8 @@ EOF
 resource "aws_iam_role_policy_attachment" "lambda_logs" {
   role       = aws_iam_role.lambda_iam.name
   policy_arn = aws_iam_policy.lambda_logging.arn
+}
+resource "aws_iam_role_policy_attachment" "lambda_dynamodb" {
+  role       = aws_iam_role.lambda_iam.name
+  policy_arn = aws_iam_policy.lambda_policy_dynamodb.arn
 }
