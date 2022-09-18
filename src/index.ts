@@ -13,7 +13,7 @@ exports.lambdaHandler = async function (payload: LambdaPayload, context: any) {
   const service = new AnimesGrastisBRService();
 
   let pages = [];
-  const allResult: string | any[] = [];
+  const allResult: unknown[] = [];
   for (let i = 1; i <= pagesToFetch; i++) {
     pages.push(service.getPage(String(i)));
     if (pages.length >= 10) {
@@ -29,7 +29,10 @@ exports.lambdaHandler = async function (payload: LambdaPayload, context: any) {
     params: payload,
   };
 };
-async function processarPaginas(pages: Promise<Anime[]>[], allResult: any[]) {
+async function processarPaginas(
+  pages: Promise<Anime[]>[],
+  allResult: unknown[]
+) {
   await Promise.all(pages).then(async results => {
     for (const page of results) {
       allResult.push(...page);
@@ -47,4 +50,3 @@ async function processarPaginas(pages: Promise<Anime[]>[], allResult: any[]) {
     }
   });
 }
-
