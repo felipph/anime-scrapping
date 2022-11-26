@@ -8,8 +8,8 @@ export class AnimesGrastisBRService {
     return createHash('sha256').update(string).digest('hex');
   }
 
-  async getPage(page: string): Promise<Anime[]> {
-    const url = `https://www.animesgratisbr.biz/animes/page/${page}/`;
+  async getPage(pageNumber: string): Promise<Anime[]> {
+    const url = `https://www.animesgratisbr.biz/animes/page/${pageNumber}/`;
     const listaAnimes: Anime[] = [];
     await axios(url)
       .then((response: {data: any}) => {
@@ -41,6 +41,7 @@ export class AnimesGrastisBRService {
     const pages = [];
     for (let i = 1; i <= numPages; i++) {
       pages.push(this.getPage(String(i)));
+      console.log('Buscando página ' + i + 'de' + pages);
     }
     const allAnimes: Anime[] = [];
     await Promise.all(pages).then(async results => {

@@ -31,3 +31,14 @@ tflocal apply
 awslocal lambda invoke --function-name lambda-anime-scrapper --cli-binary-format raw-in-base64-out --payload '{"maxPages": 10}' response.out
 ```
 
+### Ler o LOG
+
+```bash
+awslocal logs tail '/aws/lambda/lambda-anime-scrapper' --follow
+```
+
+### Ler o DynamoDB
+
+```bash
+awslocal dynamodb scan --table-name AnimeList
+```

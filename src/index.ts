@@ -2,6 +2,13 @@ import {AnimesGrastisBRService} from './service/AnimesGrastisBRService';
 import {Anime, LambdaPayload} from './types/types';
 import * as AWS from 'aws-sdk';
 
+// URI and other properties could be load by ENV Vars or by property file (.env)
+if (process.env['LOCALSTACK_HOSTNAME']) {
+  AWS.config.update({
+    region: 'us-east-1',
+    endpoint: 'http://localhost:4566'
+  });
+}
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 exports.lambdaHandler = async function (payload: LambdaPayload, context: any) {
@@ -46,7 +53,12 @@ async function processarPaginas(
           AnimeList: putReqs,
         },
       };
-      await dynamoDB.batchWrite(req).promise();
+      dynamoDB.batchWrite(req, (err, data) => {
+        if (err) {
+          console.log('Erro ao escrever no DynamoDB!');
+          console.log(err);
+        }
+      });
     }
   });
 }
